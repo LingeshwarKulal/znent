@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+}
+
+/* Custom responsive styles */
+@layer components {
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-lg p-4 sm:p-6 border-2 border-transparent 
+           hover:border-primary-teal transition-all duration-200 h-full;
+  }
+
+  .section-padding {
+    @apply py-8 sm:py-12 lg:py-16;
+  }
+
+  .heading-1 {
+    @apply text-3xl sm:text-4xl md:text-5xl font-bold;
+  }
+
+  .heading-2 {
+    @apply text-2xl sm:text-3xl font-bold;
+  }
+
+  .paragraph {
+    @apply text-base sm:text-lg leading-relaxed;
+  }
+
+  .button-primary {
+    @apply bg-accent-emerald hover:bg-green-600 text-white 
+           text-base sm:text-lg px-6 sm:px-8 py-2 sm:py-3 rounded-lg 
+           transition-all duration-200 transform hover:scale-105 
+           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-emerald;
+  }
+}
+
+/* Responsive chart containers */
+.chart-container {
+  @apply w-full h-[300px] sm:h-[400px] lg:h-[500px];
+}
+
+/* Responsive tables */
+.responsive-table {
+  @apply w-full overflow-x-auto;
+}
+
+.responsive-table table {
+  @apply min-w-full divide-y divide-gray-200;
+}
+
+/* Custom scrollbar */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1a1a1a;
+    --text-primary: #ffffff;
+  }
+} 

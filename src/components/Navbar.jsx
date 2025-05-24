@@ -1,8 +1,14 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const location = useLocation()
+  
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false)
+  }, [location])
 
   const menuItems = [
     { name: 'Dashboard', href: '/' },
@@ -14,12 +20,15 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className="bg-primary-navy">
+    <nav className="bg-primary-navy sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
+          <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <span className="text-white text-xl font-bold">ZN Entrepreneur</span>
+              <span className="text-white text-xl font-bold">
+                <span className="hidden sm:inline">ZN Entrepreneur</span>
+                <span className="sm:hidden">ZN</span>
+              </span>
             </Link>
           </div>
 
@@ -30,7 +39,11 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  className={`${
+                    location.pathname === item.href
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  } px-3 py-2 rounded-md text-sm font-medium transition-all duration-200`}
                 >
                   {item.name}
                 </Link>
@@ -42,7 +55,8 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
               {!isOpen ? (
@@ -60,22 +74,27 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {menuItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
+      <div
+        className={`${
+          isOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+        } md:hidden fixed top-16 left-0 right-0 bg-primary-navy transition-all duration-200 ease-in-out transform`}
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          {menuItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.href}
+              className={`${
+                location.pathname === item.href
+                  ? 'bg-gray-900 text-white'
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              } block px-3 py-2 rounded-md text-base font-medium transition-all duration-200`}
+            >
+              {item.name}
+            </Link>
+          ))}
         </div>
-      )}
+      </div>
     </nav>
   )
 }
